@@ -6,4 +6,6 @@
 2. 用juptyter notebook重新编排，便于阅读
 3. 将书中绝大多数的图标用源码实现，便于比较
 
+最后一章 大数据与MapReduce没有学习，所以相关代码缺失
+
 /deepLearning 目录为《深度学习入门：基于Python的理论与实现》 斋藤康毅 随书源码
