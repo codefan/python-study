@@ -4,3 +4,7 @@ __pycache__
 target
 */target
 *.iml
+*.pkl
+*.zip
+*.gz
+
