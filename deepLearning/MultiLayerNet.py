@@ -4,10 +4,12 @@ import numpy as np
 
 class MultiLayerNet:
     
-    def __init__(self, layerSize, weight_init_std=0.01, h = sigmoid, sigma = softmax):
+    def __init__(self, layerSize, weight_init_std=0.01):
         self.l = len(layerSize) - 1
-        self.h = h
-        self.sigma = sigma
+        # sigmoid sigmoid_grad
+        # 随意这个值不能 改变，如果需要改 就需要配对的修改 sigmoid_grad
+        self.h = sigmoid
+        self.sigma = softmax
         self.W = []
         self.B = []
         # 初始化权重
@@ -81,10 +83,13 @@ class MultiLayerNet:
         gW.append(np.dot(Z[self.l-1].T, dy))
         gB.append(np.sum(dy, axis=0))
             
-        for i in range(self.l-2,-1,-1):    
+        for i in range(self.l-2,-1,-1):
+            # 反向传播 的偏导 就是 W系数，
             da = np.dot(dy, self.W[i+1].T)
+            # 激活函数的偏导
             dy = sigmoid_grad(A[i+1]) * da
             gW.append(np.dot(A[i].T, dy))
             gB.append(np.sum(dy, axis=0))
         # numerical_gradient 和这个返回的顺序一致
+        # gW.reverse() ; gB.reverse()
         return gW[::-1], gB[::-1]
