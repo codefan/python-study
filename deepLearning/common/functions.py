@@ -22,6 +22,10 @@ def relu(x):
     return np.maximum(0, x)
 
 
+def tanh(x):
+    return np.tanh(x)
+    
+    
 def relu_grad(x):
     grad = np.zeros(x)
     grad[x>=0] = 1
