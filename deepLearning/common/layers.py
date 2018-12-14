@@ -18,7 +18,7 @@ class Relu:
     def backward(self, dout):
         dout[self.mask] = 0
         dx = dout
-
+        # Relu 的导数 x>0 时为1 所以 dout 不用变化
         return dx
 
 
@@ -32,6 +32,9 @@ class Sigmoid:
         return out
 
     def backward(self, dout):
+        # y = 1/(1+exp(-x))
+        # dy = exp(-x) / (1+exp(-x)) ** 2
+        # == y (1-y)
         dx = dout * (1.0 - self.out) * self.out
 
         return dx
@@ -51,6 +54,9 @@ class Affine:
     def forward(self, x):
         # 对应张量
         self.original_x_shape = x.shape
+        # A trick when you want to flatten a matrix X of shape (a,b,c,d) 
+        #   to a matrix X_flatten of shape (bcd, a) is to use:
+        # 这个地方主要为了考虑 4阶 张量的情况
         x = x.reshape(x.shape[0], -1)
         self.x = x
 
@@ -60,10 +66,13 @@ class Affine:
 
     def backward(self, dout):
         dx = np.dot(dout, self.W.T)
+        # 3个偏导 W， B 为参数 无需继续传递， dx作为dout继续传递 
         self.dW = np.dot(self.x.T, dout)
+        # 考虑批处理情况
         self.db = np.sum(dout, axis=0)
-        
-        dx = dx.reshape(*self.original_x_shape)  # 还原输入数据的形状（对应张量）
+        # 还原输入数据的形状（对应张量）
+        # * 是展开运算符类似于javaScript的 ...
+        dx = dx.reshape(*self.original_x_shape)  
         return dx
 
 
@@ -81,8 +90,10 @@ class SoftmaxWithLoss:
         return self.loss
 
     def backward(self, dout=1):
+        # batch_size 这儿dx 除上 batch_size 也是后面db 可以求和保持一致的依据
         batch_size = self.t.shape[0]
-        if self.t.size == self.y.size: # 监督数据是one-hot-vector的情况
+        if self.t.size == self.y.size: 
+            # 监督数据是one-hot-vector的情况
             dx = (self.y - self.t) / batch_size
         else:
             dx = self.y.copy()

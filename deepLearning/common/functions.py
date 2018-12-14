@@ -53,6 +53,7 @@ def cross_entropy_error(y, t):
         t = t.argmax(axis=1)
              
     batch_size = y.shape[0]
+    # 损失函数 - log(y) 求均值  P87 公式 4.2
     return -np.sum(np.log(y[np.arange(batch_size), t] + 1e-7)) / batch_size
 
 

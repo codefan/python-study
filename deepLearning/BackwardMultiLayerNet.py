@@ -24,7 +24,7 @@ class MultiLayerNet:
         self.lastLayer = SoftmaxWithLoss()
         
     def predict(self, x):
-        for layer in self.layers.values():
+        for layer in self.layers:
             x = layer.forward(x)
         
         return x
