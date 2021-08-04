@@ -14,7 +14,11 @@ for i in range(1,3):
     soup = BeautifulSoup(urllib.request.urlopen(url=request),features='html.parser')
     yinbiao = soup.select(".phonetic")[0].text
     sh.cell(row = i,column = 2).value = yinbiao
+    yinbiao = soup.select(".phonetic")[1].text
+    sh.cell(row = i,column = 3).value = yinbiao
     # print( soup.title)
+    yinbiao = soup.select(".trans-container")[0].text
+    sh.cell(row = i,column = 4).value = yinbiao
 
 wb.save('C:\\Users\\codef\\Documents\\temp\\ceshi2.xlsx')
 wb.close()
