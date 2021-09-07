@@ -1,8 +1,7 @@
 import sympy 
 
-x,y,z = sympy.symbols('x y z')
+x,a,b,c = sympy.symbols('x a b c')
 
-def equationX(symbol):
-    return sympy.solve(symbol, x)
+print(sympy.solve( (x-(x-(x-4)/3)/2)/5-x/4, x))
 
-print(equationX( (x-(x-(x-4)/3)/2)/5-x/4))
+print(sympy.solve(a*x**2+b*x+c, x))
